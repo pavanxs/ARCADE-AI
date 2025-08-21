@@ -2,18 +2,10 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
 import {
 	Select,
 	SelectContent,
@@ -32,8 +24,6 @@ import {
 	Eye,
 	Edit,
 	MoreHorizontal,
-	Trash2,
-	Copy,
 	ExternalLink,
 	BarChart3,
 	Star,
@@ -44,7 +34,6 @@ import {
 	AlertCircle,
 	CheckCircle,
 	Clock,
-	Zap,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -196,7 +185,8 @@ export default function MyAIs() {
 		}
 	});
 
-	const getStatusColor = (status) => {
+	type AiStatus = 'published' | 'draft' | 'review' | 'rejected' | string;
+	const getStatusColor = (status: AiStatus) => {
 		switch (status) {
 			case 'published':
 				return 'bg-green-500';
@@ -211,7 +201,7 @@ export default function MyAIs() {
 		}
 	};
 
-	const getStatusIcon = (status) => {
+	const getStatusIcon = (status: AiStatus) => {
 		switch (status) {
 			case 'published':
 				return <CheckCircle className='h-4 w-4' />;

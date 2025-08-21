@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Card,
@@ -25,11 +25,7 @@ import {
 	Star,
 	Lightbulb,
 	Feather,
-	Timer,
-	Crown,
-	Eye,
 	ThumbsUp,
-	RotateCcw,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -38,9 +34,8 @@ export default function StoryBuilderRoom() {
 	const [gameState, setGameState] = useState('intro'); // intro, writing, voting, complete
 	const [currentRound, setCurrentRound] = useState(1);
 	const [timeLeft, setTimeLeft] = useState(60);
-	const [userContribution, setUserContribution] = useState('');
 	const [hasSubmitted, setHasSubmitted] = useState(false);
-	const messagesEndRef = useRef(null);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const room = {
 		name: 'Collaborative Sci-Fi Adventure',
@@ -53,38 +48,41 @@ export default function StoryBuilderRoom() {
 		difficulty: 'Intermediate',
 	};
 
-	const storyParts = [
-		{
-			id: 1,
-			author: 'Story Weaver AI',
-			avatar: '/api/placeholder/32/32',
-			content:
-				'In the year 2157, Captain Maya Chen stood on the observation deck of the starship Odyssey, watching the mysterious nebula known as the Whispering Void grow larger through the reinforced viewport. For three months, they had been receiving strange signals from its depths—signals that seemed almost... intelligent.',
-			timestamp: 'Round 1',
-			type: 'ai',
-			votes: 0,
-		},
-		{
-			id: 2,
-			author: 'Alex Rivera',
-			avatar: '/api/placeholder/32/32',
-			content:
-				'"Captain," came the voice of Lieutenant Torres from behind her. "The signals are getting stronger. Our linguistic AI has been trying to decode them, but they keep changing patterns. It\'s almost like... like they\'re trying to learn how to communicate with us."',
-			timestamp: 'Round 2',
-			type: 'user',
-			votes: 4,
-		},
-		{
-			id: 3,
-			author: 'Sarah Kim',
-			avatar: '/api/placeholder/32/32',
-			content:
-				'Maya turned away from the viewport, her brow furrowed with concern. She had heard rumors about the Void during her academy days—stories of ships that entered and came back... different. "Torres, have you noticed anything unusual about the crew lately? Any strange dreams or behaviors?"',
-			timestamp: 'Round 3',
-			type: 'user',
-			votes: 3,
-		},
-	];
+	const storyParts = useMemo(
+		() => [
+			{
+				id: 1,
+				author: 'Story Weaver AI',
+				avatar: '/api/placeholder/32/32',
+				content:
+					'In the year 2157, Captain Maya Chen stood on the observation deck of the starship Odyssey, watching the mysterious nebula known as the Whispering Void grow larger through the reinforced viewport. For three months, they had been receiving strange signals from its depths—signals that seemed almost... intelligent.',
+				timestamp: 'Round 1',
+				type: 'ai',
+				votes: 0,
+			},
+			{
+				id: 2,
+				author: 'Alex Rivera',
+				avatar: '/api/placeholder/32/32',
+				content:
+					'"Captain," came the voice of Lieutenant Torres from behind her. "The signals are getting stronger. Our linguistic AI has been trying to decode them, but they keep changing patterns. It\'s almost like... like they\'re trying to learn how to communicate with us."',
+				timestamp: 'Round 2',
+				type: 'user',
+				votes: 4,
+			},
+			{
+				id: 3,
+				author: 'Sarah Kim',
+				avatar: '/api/placeholder/32/32',
+				content:
+					'Maya turned away from the viewport, her brow furrowed with concern. She had heard rumors about the Void during her academy days—stories of ships that entered and came back... different. "Torres, have you noticed anything unusual about the crew lately? Any strange dreams or behaviors?"',
+				timestamp: 'Round 3',
+				type: 'user',
+				votes: 3,
+			},
+		],
+		[]
+	);
 
 	const participants = [
 		{
@@ -181,13 +179,12 @@ export default function StoryBuilderRoom() {
 
 	const submitContribution = () => {
 		if (currentInput.trim() && !hasSubmitted) {
-			setUserContribution(currentInput);
 			setHasSubmitted(true);
 			setCurrentInput('');
 		}
 	};
 
-	const voteForContribution = (contributionId) => {
+	const voteForContribution = (contributionId: number) => {
 		// In real app, this would update votes
 		console.log('Voting for contribution:', contributionId);
 	};
@@ -197,7 +194,7 @@ export default function StoryBuilderRoom() {
 		setTimeLeft(60);
 	};
 
-	const getStatusIcon = (status) => {
+	const getStatusIcon = (status: string) => {
 		switch (status) {
 			case 'writing':
 				return <Feather className='h-4 w-4 text-blue-500 animate-pulse' />;
@@ -210,7 +207,7 @@ export default function StoryBuilderRoom() {
 		}
 	};
 
-	const formatTime = (seconds) => {
+	const formatTime = (seconds: number) => {
 		const mins = Math.floor(seconds / 60);
 		const secs = seconds % 60;
 		return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -276,7 +273,7 @@ export default function StoryBuilderRoom() {
 									</h2>
 									<p className='text-gray-600 mb-6'>
 										Work together to create an amazing sci-fi adventure! Each
-										round, you'll add to the story and vote on the best
+										round, you&apos;ll add to the story and vote on the best
 										contributions.
 									</p>
 
@@ -466,7 +463,7 @@ export default function StoryBuilderRoom() {
 													</h3>
 													<p className='text-gray-600'>
 														Wait for other writers to submit their parts, then
-														we'll vote on the best one.
+														we&apos;ll vote on the best one.
 													</p>
 												</div>
 											)}

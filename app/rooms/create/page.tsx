@@ -20,9 +20,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import {
 	Users,
@@ -38,19 +36,15 @@ import {
 	BookOpen,
 	Lightbulb,
 	Sword,
-	Music,
 	Trophy,
 	Clock,
-	Crown,
-	Star,
 	Plus,
 	X,
 	Play,
-	Zap,
-	AlertCircle,
 	CheckCircle,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CreateRoom() {
 	const [roomData, setRoomData] = useState({
@@ -65,12 +59,12 @@ export default function CreateRoom() {
 		allowSpectators: true,
 		enableChat: true,
 		enableVoice: false,
-		tags: [],
-		rules: [],
+		tags: [] as string[],
+		rules: [] as string[],
 		customSettings: {},
 	});
-	const [tagInput, setTagInput] = useState('');
-	const [ruleInput, setRuleInput] = useState('');
+	const [tagInput, setTagInput] = useState<string>('');
+	const [ruleInput, setRuleInput] = useState<string>('');
 
 	const roomCategories = [
 		{
@@ -193,7 +187,7 @@ export default function CreateRoom() {
 	];
 
 	const addTag = () => {
-		if (tagInput && !roomData.tags.includes(tagInput)) {
+		if (tagInput && !roomData.tags.includes(tagInput as string)) {
 			setRoomData((prev) => ({
 				...prev,
 				tags: [...prev.tags, tagInput],
@@ -202,7 +196,7 @@ export default function CreateRoom() {
 		}
 	};
 
-	const removeTag = (tagToRemove) => {
+	const removeTag = (tagToRemove: string) => {
 		setRoomData((prev) => ({
 			...prev,
 			tags: prev.tags.filter((tag) => tag !== tagToRemove),
@@ -219,14 +213,14 @@ export default function CreateRoom() {
 		}
 	};
 
-	const removeRule = (ruleToRemove) => {
+	const removeRule = (ruleToRemove: string) => {
 		setRoomData((prev) => ({
 			...prev,
 			rules: prev.rules.filter((rule) => rule !== ruleToRemove),
 		}));
 	};
 
-	const selectCategory = (categoryId) => {
+	const selectCategory = (categoryId: string) => {
 		const category = roomCategories.find((c) => c.id === categoryId);
 		if (category) {
 			setRoomData((prev) => ({
@@ -387,9 +381,11 @@ export default function CreateRoom() {
 												{getAvailableHosts().map((host) => (
 													<SelectItem key={host.id} value={host.id}>
 														<div className='flex items-center gap-2'>
-															<img
+															<Image
 																src={host.avatar}
 																alt={host.name}
+																width={24}
+																height={24}
 																className='w-6 h-6 rounded-full'
 															/>
 															<div>
@@ -766,7 +762,7 @@ export default function CreateRoom() {
 														{category.id === 'creative' && (
 															<ul className='space-y-1 text-gray-600'>
 																<li>• Encourage wild ideas</li>
-																<li>• Build on others' contributions</li>
+																<li>• Build on others&apos; contributions</li>
 																<li>• Avoid premature criticism</li>
 															</ul>
 														)}
@@ -788,7 +784,7 @@ export default function CreateRoom() {
 															<ul className='space-y-1 text-gray-600'>
 																<li>• Set clear scenario boundaries</li>
 																<li>• Encourage character development</li>
-																<li>• Respect others' creative choices</li>
+																<li>• Respect others&apos; creative choices</li>
 															</ul>
 														)}
 													</div>

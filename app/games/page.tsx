@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
@@ -26,20 +20,17 @@ import {
 	Search,
 	Play,
 	Star,
-	Trophy,
 	Brain,
 	BookOpen,
 	Sword,
 	Puzzle,
-	Zap,
 	Crown,
-	Fire,
 	Eye,
 	ArrowLeft,
 	Plus,
-	Filter,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function GamesHub() {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -189,7 +180,8 @@ export default function GamesHub() {
 		},
 	];
 
-	const getStatusColor = (status) => {
+	type GameStatus = 'live' | 'waiting' | 'full' | string;
+	const getStatusColor = (status: GameStatus) => {
 		switch (status) {
 			case 'live':
 				return 'bg-green-500';
@@ -202,7 +194,7 @@ export default function GamesHub() {
 		}
 	};
 
-	const getStatusText = (status) => {
+	const getStatusText = (status: GameStatus) => {
 		switch (status) {
 			case 'live':
 				return 'Live';
@@ -215,7 +207,7 @@ export default function GamesHub() {
 		}
 	};
 
-	const getDifficultyColor = (difficulty) => {
+	const getDifficultyColor = (difficulty: string) => {
 		switch (difficulty.toLowerCase()) {
 			case 'easy':
 				return 'text-green-600 bg-green-100';
@@ -326,9 +318,12 @@ export default function GamesHub() {
 								key={game.id}
 								className='hover:shadow-lg transition-shadow overflow-hidden'>
 								<div className='relative'>
-									<img
+									<Image
 										src={game.thumbnail}
 										alt={game.name}
+										width={300}
+										height={200}
+										sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 										className='w-full h-48 object-cover'
 									/>
 									<div className='absolute top-4 left-4'>

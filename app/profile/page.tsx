@@ -2,19 +2,12 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import {
 	Bot,
@@ -27,11 +20,9 @@ import {
 	Users,
 	Calendar,
 	MapPin,
-	Link as LinkIcon,
 	Github,
 	Twitter,
 	Globe,
-	Mail,
 	Shield,
 	Crown,
 	Zap,
@@ -200,7 +191,8 @@ export default function UserProfile() {
 		},
 	];
 
-	const getRarityColor = (rarity) => {
+	type Rarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | string;
+	const getRarityColor = (rarity: Rarity) => {
 		switch (rarity) {
 			case 'common':
 				return 'text-gray-600 bg-gray-100';
@@ -217,7 +209,14 @@ export default function UserProfile() {
 		}
 	};
 
-	const getActivityIcon = (type) => {
+	type ActivityType =
+		| 'ai_published'
+		| 'room_hosted'
+		| 'achievement'
+		| 'review'
+		| 'follower'
+		| string;
+	const getActivityIcon = (type: ActivityType) => {
 		switch (type) {
 			case 'ai_published':
 				return Bot;
@@ -520,240 +519,236 @@ export default function UserProfile() {
 
 					{/* Main Content */}
 					<div className='lg:col-span-3'>
-						<Tabs defaultValue='ais' className='w-full'>
-							<TabsList className='grid w-full grid-cols-4'>
-								<TabsTrigger value='ais'>My AIs</TabsTrigger>
-								<TabsTrigger value='achievements'>Achievements</TabsTrigger>
-								<TabsTrigger value='activity'>Activity</TabsTrigger>
-								<TabsTrigger value='rooms'>Rooms</TabsTrigger>
-							</TabsList>
+						<div className='w-full'>
+							<div className='grid grid-cols-4 gap-4'>
+								<Button variant='outline' className='w-full'>
+									My AIs
+								</Button>
+								<Button variant='outline' className='w-full'>
+									Achievements
+								</Button>
+								<Button variant='outline' className='w-full'>
+									Activity
+								</Button>
+								<Button variant='outline' className='w-full'>
+									Rooms
+								</Button>
+							</div>
+						</div>
 
-							<TabsContent value='ais' className='space-y-6 mt-6'>
-								<div className='grid gap-6'>
-									{myAIs.map((ai) => (
+						<div className='space-y-6 mt-6'>
+							<div className='grid gap-6'>
+								{myAIs.map((ai) => (
+									<Card
+										key={ai.id}
+										className='hover:shadow-lg transition-shadow'>
+										<CardContent className='p-6'>
+											<div className='flex items-start gap-4'>
+												<Avatar className='h-16 w-16'>
+													<AvatarImage src={ai.avatar} />
+													<AvatarFallback>{ai.name[0]}</AvatarFallback>
+												</Avatar>
+
+												<div className='flex-1'>
+													<div className='flex items-center gap-2 mb-2'>
+														<h3 className='text-xl font-semibold'>{ai.name}</h3>
+														<Badge variant='outline'>{ai.category}</Badge>
+													</div>
+													<p className='text-gray-600 mb-3'>{ai.description}</p>
+
+													<div className='grid grid-cols-3 gap-4 text-center'>
+														<div>
+															<div className='text-lg font-semibold flex items-center justify-center gap-1'>
+																<Star className='h-4 w-4 text-yellow-500' />
+																{ai.rating}
+															</div>
+															<div className='text-xs text-gray-500'>
+																Rating
+															</div>
+														</div>
+														<div>
+															<div className='text-lg font-semibold'>
+																{ai.users.toLocaleString()}
+															</div>
+															<div className='text-xs text-gray-500'>Users</div>
+														</div>
+														<div>
+															<div className='text-lg font-semibold'>
+																${ai.revenue.toFixed(0)}
+															</div>
+															<div className='text-xs text-gray-500'>
+																Revenue
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<Button variant='outline' asChild>
+													<Link href={`/ai/${ai.id}`}>View</Link>
+												</Button>
+											</div>
+										</CardContent>
+									</Card>
+								))}
+							</div>
+						</div>
+
+						<div className='space-y-6 mt-6'>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+								{achievements.map((achievement) => {
+									const Icon = achievement.icon;
+									return (
 										<Card
-											key={ai.id}
+											key={achievement.id}
 											className='hover:shadow-lg transition-shadow'>
 											<CardContent className='p-6'>
 												<div className='flex items-start gap-4'>
-													<Avatar className='h-16 w-16'>
-														<AvatarImage src={ai.avatar} />
-														<AvatarFallback>{ai.name[0]}</AvatarFallback>
-													</Avatar>
-
-													<div className='flex-1'>
-														<div className='flex items-center gap-2 mb-2'>
-															<h3 className='text-xl font-semibold'>
-																{ai.name}
-															</h3>
-															<Badge variant='outline'>{ai.category}</Badge>
-														</div>
-														<p className='text-gray-600 mb-3'>
-															{ai.description}
-														</p>
-
-														<div className='grid grid-cols-3 gap-4 text-center'>
-															<div>
-																<div className='text-lg font-semibold flex items-center justify-center gap-1'>
-																	<Star className='h-4 w-4 text-yellow-500' />
-																	{ai.rating}
-																</div>
-																<div className='text-xs text-gray-500'>
-																	Rating
-																</div>
-															</div>
-															<div>
-																<div className='text-lg font-semibold'>
-																	{ai.users.toLocaleString()}
-																</div>
-																<div className='text-xs text-gray-500'>
-																	Users
-																</div>
-															</div>
-															<div>
-																<div className='text-lg font-semibold'>
-																	${ai.revenue.toFixed(0)}
-																</div>
-																<div className='text-xs text-gray-500'>
-																	Revenue
-																</div>
-															</div>
-														</div>
+													<div
+														className={`p-3 rounded-lg ${getRarityColor(
+															achievement.rarity
+														)}`}>
+														<Icon className='h-6 w-6' />
 													</div>
-
-													<Button variant='outline' asChild>
-														<Link href={`/ai/${ai.id}`}>View</Link>
-													</Button>
+													<div className='flex-1'>
+														<div className='flex items-center gap-2 mb-1'>
+															<h3 className='font-semibold'>
+																{achievement.name}
+															</h3>
+															<Badge
+																variant='outline'
+																className={getRarityColor(achievement.rarity)}>
+																{achievement.rarity}
+															</Badge>
+														</div>
+														<p className='text-sm text-gray-600 mb-2'>
+															{achievement.description}
+														</p>
+														<p className='text-xs text-gray-500'>
+															Unlocked{' '}
+															{new Date(
+																achievement.unlockedAt
+															).toLocaleDateString()}
+														</p>
+													</div>
 												</div>
 											</CardContent>
 										</Card>
-									))}
-								</div>
-							</TabsContent>
+									);
+								})}
+							</div>
+						</div>
 
-							<TabsContent value='achievements' className='space-y-6 mt-6'>
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-									{achievements.map((achievement) => {
-										const Icon = achievement.icon;
-										return (
-											<Card
-												key={achievement.id}
-												className='hover:shadow-lg transition-shadow'>
-												<CardContent className='p-6'>
-													<div className='flex items-start gap-4'>
-														<div
-															className={`p-3 rounded-lg ${getRarityColor(
-																achievement.rarity
-															)}`}>
-															<Icon className='h-6 w-6' />
-														</div>
-														<div className='flex-1'>
-															<div className='flex items-center gap-2 mb-1'>
-																<h3 className='font-semibold'>
-																	{achievement.name}
-																</h3>
-																<Badge
-																	variant='outline'
-																	className={getRarityColor(
-																		achievement.rarity
-																	)}>
-																	{achievement.rarity}
-																</Badge>
-															</div>
-															<p className='text-sm text-gray-600 mb-2'>
-																{achievement.description}
-															</p>
-															<p className='text-xs text-gray-500'>
-																Unlocked{' '}
-																{new Date(
-																	achievement.unlockedAt
-																).toLocaleDateString()}
-															</p>
-														</div>
+						<div className='space-y-6 mt-6'>
+							<Card>
+								<CardHeader>
+									<CardTitle>Recent Activity</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className='space-y-4'>
+										{recentActivity.map((activity) => {
+											const Icon = getActivityIcon(activity.type);
+											return (
+												<div
+													key={activity.id}
+													className='flex items-center gap-4 p-3 border rounded-lg'>
+													<Icon className='h-5 w-5 text-gray-500' />
+													<div className='flex-1'>
+														<p className='text-sm'>{activity.description}</p>
+														<p className='text-xs text-gray-500'>
+															{activity.timestamp}
+														</p>
 													</div>
-												</CardContent>
-											</Card>
-										);
-									})}
-								</div>
-							</TabsContent>
+												</div>
+											);
+										})}
+									</div>
+								</CardContent>
+							</Card>
+						</div>
 
-							<TabsContent value='activity' className='space-y-6 mt-6'>
+						<div className='space-y-6 mt-6'>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 								<Card>
 									<CardHeader>
-										<CardTitle>Recent Activity</CardTitle>
+										<CardTitle className='flex items-center gap-2'>
+											<Users className='h-5 w-5' />
+											Rooms Hosted
+										</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<div className='space-y-4'>
-											{recentActivity.map((activity) => {
-												const Icon = getActivityIcon(activity.type);
-												return (
-													<div
-														key={activity.id}
-														className='flex items-center gap-4 p-3 border rounded-lg'>
-														<Icon className='h-5 w-5 text-gray-500' />
-														<div className='flex-1'>
-															<p className='text-sm'>{activity.description}</p>
-															<p className='text-xs text-gray-500'>
-																{activity.timestamp}
-															</p>
-														</div>
-													</div>
-												);
-											})}
+										<div className='text-center'>
+											<div className='text-3xl font-bold text-purple-600 mb-2'>
+												{user.stats.roomsHosted}
+											</div>
+											<p className='text-sm text-gray-600'>
+												Total rooms hosted across all categories
+											</p>
 										</div>
 									</CardContent>
 								</Card>
-							</TabsContent>
-
-							<TabsContent value='rooms' className='space-y-6 mt-6'>
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-									<Card>
-										<CardHeader>
-											<CardTitle className='flex items-center gap-2'>
-												<Users className='h-5 w-5' />
-												Rooms Hosted
-											</CardTitle>
-										</CardHeader>
-										<CardContent>
-											<div className='text-center'>
-												<div className='text-3xl font-bold text-purple-600 mb-2'>
-													{user.stats.roomsHosted}
-												</div>
-												<p className='text-sm text-gray-600'>
-													Total rooms hosted across all categories
-												</p>
-											</div>
-										</CardContent>
-									</Card>
-
-									<Card>
-										<CardHeader>
-											<CardTitle className='flex items-center gap-2'>
-												<MessageSquare className='h-5 w-5' />
-												Rooms Joined
-											</CardTitle>
-										</CardHeader>
-										<CardContent>
-											<div className='text-center'>
-												<div className='text-3xl font-bold text-blue-600 mb-2'>
-													{user.stats.roomsJoined}
-												</div>
-												<p className='text-sm text-gray-600'>
-													Total rooms participated in
-												</p>
-											</div>
-										</CardContent>
-									</Card>
-								</div>
 
 								<Card>
 									<CardHeader>
-										<CardTitle>Favorite Room Categories</CardTitle>
+										<CardTitle className='flex items-center gap-2'>
+											<MessageSquare className='h-5 w-5' />
+											Rooms Joined
+										</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<div className='space-y-3'>
-											<div className='flex items-center justify-between'>
-												<div className='flex items-center gap-2'>
-													<MessageSquare className='h-4 w-4 text-blue-600' />
-													<span className='text-sm'>Debate & Discussion</span>
-												</div>
-												<div className='flex items-center gap-2'>
-													<Progress value={75} className='w-24' />
-													<span className='text-sm text-gray-500'>
-														15 rooms
-													</span>
-												</div>
+										<div className='text-center'>
+											<div className='text-3xl font-bold text-blue-600 mb-2'>
+												{user.stats.roomsJoined}
 											</div>
-
-											<div className='flex items-center justify-between'>
-												<div className='flex items-center gap-2'>
-													<BookOpen className='h-4 w-4 text-green-600' />
-													<span className='text-sm'>Learning & Education</span>
-												</div>
-												<div className='flex items-center gap-2'>
-													<Progress value={60} className='w-24' />
-													<span className='text-sm text-gray-500'>
-														12 rooms
-													</span>
-												</div>
-											</div>
-
-											<div className='flex items-center justify-between'>
-												<div className='flex items-center gap-2'>
-													<Gamepad2 className='h-4 w-4 text-red-600' />
-													<span className='text-sm'>AI Gaming</span>
-												</div>
-												<div className='flex items-center gap-2'>
-													<Progress value={40} className='w-24' />
-													<span className='text-sm text-gray-500'>8 rooms</span>
-												</div>
-											</div>
+											<p className='text-sm text-gray-600'>
+												Total rooms participated in
+											</p>
 										</div>
 									</CardContent>
 								</Card>
-							</TabsContent>
-						</Tabs>
+							</div>
+
+							<Card>
+								<CardHeader>
+									<CardTitle>Favorite Room Categories</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className='space-y-3'>
+										<div className='flex items-center justify-between'>
+											<div className='flex items-center gap-2'>
+												<MessageSquare className='h-4 w-4 text-blue-600' />
+												<span className='text-sm'>Debate & Discussion</span>
+											</div>
+											<div className='flex items-center gap-2'>
+												<Progress value={75} className='w-24' />
+												<span className='text-sm text-gray-500'>15 rooms</span>
+											</div>
+										</div>
+
+										<div className='flex items-center justify-between'>
+											<div className='flex items-center gap-2'>
+												<BookOpen className='h-4 w-4 text-green-600' />
+												<span className='text-sm'>Learning & Education</span>
+											</div>
+											<div className='flex items-center gap-2'>
+												<Progress value={60} className='w-24' />
+												<span className='text-sm text-gray-500'>12 rooms</span>
+											</div>
+										</div>
+
+										<div className='flex items-center justify-between'>
+											<div className='flex items-center gap-2'>
+												<Gamepad2 className='h-4 w-4 text-red-600' />
+												<span className='text-sm'>AI Gaming</span>
+											</div>
+											<div className='flex items-center gap-2'>
+												<Progress value={40} className='w-24' />
+												<span className='text-sm text-gray-500'>8 rooms</span>
+											</div>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
+						</div>
 					</div>
 				</div>
 			</div>

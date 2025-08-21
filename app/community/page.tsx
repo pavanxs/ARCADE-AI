@@ -25,22 +25,16 @@ import {
 	ArrowLeft,
 	Trophy,
 	Star,
-	TrendingUp,
 	Users,
 	Crown,
 	Medal,
 	Award,
-	Calendar,
 	MessageSquare,
 	ThumbsUp,
 	ThumbsDown,
 	Flag,
 	Search,
-	Filter,
-	Zap,
 	Heart,
-	Fire,
-	Eye,
 	Share,
 	ChevronUp,
 	ChevronDown,
@@ -251,7 +245,7 @@ export default function CommunityPage() {
 		},
 	];
 
-	const getRankIcon = (rank) => {
+	const getRankIcon = (rank: number) => {
 		switch (rank) {
 			case 1:
 				return <Crown className='h-5 w-5 text-yellow-500' />;
@@ -264,7 +258,7 @@ export default function CommunityPage() {
 		}
 	};
 
-	const getChangeIcon = (change) => {
+	const getChangeIcon = (change: string) => {
 		switch (change) {
 			case 'up':
 				return <ChevronUp className='h-4 w-4 text-green-500' />;
@@ -275,7 +269,7 @@ export default function CommunityPage() {
 		}
 	};
 
-	const getBadgeColor = (badge) => {
+	const getBadgeColor = (badge: string) => {
 		switch (badge) {
 			case 'gold':
 				return 'bg-yellow-500';
@@ -369,7 +363,7 @@ export default function CommunityPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className='text-lg flex items-center gap-2'>
-									<Fire className='h-5 w-5 text-orange-500' />
+									<Bot className='h-5 w-5 text-orange-500' />
 									Trending Topics
 								</CardTitle>
 							</CardHeader>
@@ -408,7 +402,7 @@ export default function CommunityPage() {
 									<p>• Provide honest and helpful reviews</p>
 									<p>• No spam or self-promotion</p>
 									<p>• Report inappropriate content</p>
-									<p>• Celebrate others' achievements</p>
+									<p>• Celebrate others&apos; achievements</p>
 								</div>
 								<Button variant='outline' className='w-full mt-4' size='sm'>
 									Read Full Guidelines

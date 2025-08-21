@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Card,
@@ -12,8 +12,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -25,26 +23,13 @@ import {
 	Mic,
 	MicOff,
 	VideoOff,
-	Video,
 	Hand,
 	Crown,
-	Star,
 	Clock,
-	Eye,
-	MessageSquare,
-	Trophy,
-	Zap,
-	Play,
-	Pause,
-	Volume2,
-	VolumeX,
-	UserPlus,
-	UserMinus,
 	Flag,
 	Share,
 	Heart,
 	ThumbsUp,
-	MoreHorizontal,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -55,8 +40,7 @@ export default function AIRoom() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isMuted, setIsMuted] = useState(false);
 	const [isHandRaised, setIsHandRaised] = useState(false);
-	const [roomStatus, setRoomStatus] = useState('active'); // active, paused, ended
-	const messagesEndRef = useRef(null);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	// Mock room data
 	const room = {
@@ -128,67 +112,70 @@ export default function AIRoom() {
 		},
 	];
 
-	const messages = [
-		{
-			id: 1,
-			sender: 'Socrates AI',
-			avatar: '/api/placeholder/32/32',
-			message:
-				"Welcome to our philosophical debate! Today we're exploring the question: Does true free will exist? Let's start with opening statements. Alice, would you like to begin?",
-			timestamp: '14:23',
-			type: 'ai',
-			reactions: [],
-		},
-		{
-			id: 2,
-			sender: 'Alice Chen',
-			avatar: '/api/placeholder/32/32',
-			message:
-				"I believe free will is an illusion. Our brains are biological computers, and every decision we make is the result of prior causes - genetics, environment, experiences. We feel like we're choosing, but it's really just complex deterministic processes.",
-			timestamp: '14:24',
-			type: 'user',
-			reactions: [
-				{ emoji: '👍', count: 3 },
-				{ emoji: '🤔', count: 2 },
-			],
-		},
-		{
-			id: 3,
-			sender: 'Bob Smith',
-			avatar: '/api/placeholder/32/32',
-			message:
-				"I respectfully disagree, Alice. While our brains are indeed physical systems, consciousness and free will emerge from complexity. Just because something has physical causes doesn't mean it's predetermined. Quantum mechanics shows us true randomness exists.",
-			timestamp: '14:25',
-			type: 'user',
-			reactions: [
-				{ emoji: '👏', count: 2 },
-				{ emoji: '💭', count: 1 },
-			],
-		},
-		{
-			id: 4,
-			sender: 'Socrates AI',
-			avatar: '/api/placeholder/32/32',
-			message:
-				"Excellent points from both sides! Bob, you're invoking quantum indeterminacy - but does randomness really give us the kind of free will we intuitively believe we have? Carol, what's your take on this?",
-			timestamp: '14:26',
-			type: 'ai',
-			reactions: [],
-		},
-		{
-			id: 5,
-			sender: 'Carol Johnson',
-			avatar: '/api/placeholder/32/32',
-			message:
-				"I think we're missing something important here. Free will isn't about being uncaused - it's about being the right kind of cause. When I choose to help someone, that choice flows from my values, beliefs, and reasoning. That's free will - being able to act according to our deeply held convictions.",
-			timestamp: '14:27',
-			type: 'user',
-			reactions: [
-				{ emoji: '✨', count: 4 },
-				{ emoji: '🎯', count: 2 },
-			],
-		},
-	];
+	const messages = useMemo(
+		() => [
+			{
+				id: 1,
+				sender: 'Socrates AI',
+				avatar: '/api/placeholder/32/32',
+				message:
+					"Welcome to our philosophical debate! Today we're exploring the question: Does true free will exist? Let's start with opening statements. Alice, would you like to begin?",
+				timestamp: '14:23',
+				type: 'ai',
+				reactions: [],
+			},
+			{
+				id: 2,
+				sender: 'Alice Chen',
+				avatar: '/api/placeholder/32/32',
+				message:
+					"I believe free will is an illusion. Our brains are biological computers, and every decision we make is the result of prior causes - genetics, environment, experiences. We feel like we're choosing, but it's really just complex deterministic processes.",
+				timestamp: '14:24',
+				type: 'user',
+				reactions: [
+					{ emoji: '👍', count: 3 },
+					{ emoji: '🤔', count: 2 },
+				],
+			},
+			{
+				id: 3,
+				sender: 'Bob Smith',
+				avatar: '/api/placeholder/32/32',
+				message:
+					"I respectfully disagree, Alice. While our brains are indeed physical systems, consciousness and free will emerge from complexity. Just because something has physical causes doesn't mean it's predetermined. Quantum mechanics shows us true randomness exists.",
+				timestamp: '14:25',
+				type: 'user',
+				reactions: [
+					{ emoji: '👏', count: 2 },
+					{ emoji: '💭', count: 1 },
+				],
+			},
+			{
+				id: 4,
+				sender: 'Socrates AI',
+				avatar: '/api/placeholder/32/32',
+				message:
+					"Excellent points from both sides! Bob, you're invoking quantum indeterminacy - but does randomness really give us the kind of free will we intuitively believe we have? Carol, what's your take on this?",
+				timestamp: '14:26',
+				type: 'ai',
+				reactions: [],
+			},
+			{
+				id: 5,
+				sender: 'Carol Johnson',
+				avatar: '/api/placeholder/32/32',
+				message:
+					"I think we're missing something important here. Free will isn't about being uncaused - it's about being the right kind of cause. When I choose to help someone, that choice flows from my values, beliefs, and reasoning. That's free will - being able to act according to our deeply held convictions.",
+				timestamp: '14:27',
+				type: 'user',
+				reactions: [
+					{ emoji: '✨', count: 4 },
+					{ emoji: '🎯', count: 2 },
+				],
+			},
+		],
+		[]
+	);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -212,12 +199,12 @@ export default function AIRoom() {
 		}
 	};
 
-	const handleReaction = (messageId, emoji) => {
+	const handleReaction = (messageId: number, emoji: string) => {
 		// In real app, this would update message reactions
 		console.log('Reaction:', messageId, emoji);
 	};
 
-	const formatTime = (minutes) => {
+	const formatTime = (minutes: number) => {
 		return `${Math.floor(minutes / 60)}:${(minutes % 60)
 			.toString()
 			.padStart(2, '0')}`;

@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +15,6 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -30,13 +23,10 @@ import {
 	ArrowLeft,
 	Save,
 	Eye,
-	Settings,
 	DollarSign,
 	Globe,
 	Lock,
-	FileText,
-	Image,
-	Code,
+	Image as ImageIcon,
 	Zap,
 	AlertCircle,
 	CheckCircle,
@@ -53,14 +43,14 @@ export default function CreateAI() {
 		description: '',
 		longDescription: '',
 		category: '',
-		tags: [],
+		tags: [] as string[],
 		pricing: {
 			type: 'free',
 			price: 0,
 			period: 'month',
 		},
-		features: [],
-		supportedLanguages: [],
+		features: [] as string[],
+		supportedLanguages: [] as string[],
 		visibility: 'public',
 		avatar: null,
 		screenshots: [],
@@ -154,7 +144,7 @@ export default function CreateAI() {
 		}
 	};
 
-	const removeTag = (tagToRemove) => {
+	const removeTag = (tagToRemove: string) => {
 		setAiData((prev) => ({
 			...prev,
 			tags: prev.tags.filter((tag) => tag !== tagToRemove),
@@ -171,14 +161,14 @@ export default function CreateAI() {
 		}
 	};
 
-	const removeFeature = (featureToRemove) => {
+	const removeFeature = (featureToRemove: string) => {
 		setAiData((prev) => ({
 			...prev,
 			features: prev.features.filter((feature) => feature !== featureToRemove),
 		}));
 	};
 
-	const handleLanguageToggle = (language) => {
+	const handleLanguageToggle = (language: string) => {
 		setAiData((prev) => ({
 			...prev,
 			supportedLanguages: prev.supportedLanguages.includes(language)
@@ -757,7 +747,7 @@ export default function CreateAI() {
 										<div>
 											<Label>AI Avatar</Label>
 											<div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mt-2'>
-												<Image className='mx-auto h-8 w-8 text-gray-400 mb-2' />
+												<ImageIcon className='mx-auto h-8 w-8 text-gray-400 mb-2' />
 												<p className='text-sm text-gray-600 mb-2'>
 													Upload an avatar for your AI
 												</p>
@@ -773,7 +763,7 @@ export default function CreateAI() {
 										<div>
 											<Label>Screenshots</Label>
 											<div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mt-2'>
-												<Image className='mx-auto h-8 w-8 text-gray-400 mb-2' />
+												<ImageIcon className='mx-auto h-8 w-8 text-gray-400 mb-2' />
 												<p className='text-sm text-gray-600 mb-2'>
 													Add screenshots of your AI in action
 												</p>

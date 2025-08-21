@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
@@ -20,7 +14,6 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import {
 	Search,
@@ -33,13 +26,10 @@ import {
 	GraduationCap,
 	Heart,
 	DollarSign,
-	TrendingUp,
-	Clock,
-	Zap,
 	Crown,
-	ChevronDown,
 	Grid3X3,
 	List,
+	Zap,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -49,7 +39,6 @@ export default function Marketplace() {
 	const [priceRange, setPriceRange] = useState([0, 100]);
 	const [sortBy, setSortBy] = useState('popular');
 	const [viewMode, setViewMode] = useState('grid');
-	const [showFilters, setShowFilters] = useState(false);
 
 	const categories = [
 		{ id: 'all', name: 'All Categories', icon: Bot, count: 1247 },

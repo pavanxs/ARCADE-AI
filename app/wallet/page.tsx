@@ -20,32 +20,24 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Progress } from '@/components/ui/progress';
 import {
 	Bot,
 	ArrowLeft,
 	Wallet,
-	CreditCard,
 	Download,
 	Upload,
 	Plus,
-	Minus,
-	TrendingUp,
-	TrendingDown,
 	DollarSign,
-	Zap,
 	ArrowUpRight,
 	ArrowDownLeft,
-	Calendar,
-	Receipt,
 	Settings,
 	AlertCircle,
 	CheckCircle,
 	Clock,
-	RefreshCw,
 	Eye,
 	EyeOff,
+	Receipt,
+	CreditCard,
 	ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -194,7 +186,7 @@ export default function WalletPage() {
 		{ month: 'Jun', earnings: 1456.78 },
 	];
 
-	const getTransactionIcon = (type) => {
+	const getTransactionIcon = (type: string) => {
 		switch (type) {
 			case 'earning':
 				return <ArrowUpRight className='h-4 w-4 text-green-600' />;
@@ -209,7 +201,7 @@ export default function WalletPage() {
 		}
 	};
 
-	const getStatusIcon = (status) => {
+	const getStatusIcon = (status: string) => {
 		switch (status) {
 			case 'completed':
 				return <CheckCircle className='h-4 w-4 text-green-600' />;
@@ -222,12 +214,12 @@ export default function WalletPage() {
 		}
 	};
 
-	const formatAmount = (amount) => {
+	const formatAmount = (amount: number) => {
 		const sign = amount >= 0 ? '+' : '';
 		return `${sign}$${Math.abs(amount).toFixed(2)}`;
 	};
 
-	const formatDate = (timestamp) => {
+	const formatDate = (timestamp: string) => {
 		return new Date(timestamp).toLocaleDateString('en-US', {
 			month: 'short',
 			day: 'numeric',

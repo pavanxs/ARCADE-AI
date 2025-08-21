@@ -23,23 +23,17 @@ import {
 	Share,
 	MessageCircle,
 	Play,
-	Download,
 	Shield,
 	Clock,
-	DollarSign,
-	Zap,
 	CheckCircle,
-	AlertCircle,
 	ThumbsUp,
 	ThumbsDown,
-	MoreHorizontal,
 	ArrowLeft,
 	ExternalLink,
-	Code,
 	Globe,
-	Smartphone,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 
 export default function AIDetailPage() {
@@ -365,8 +359,8 @@ export default function AIDetailPage() {
 											</Avatar>
 											<div className='bg-purple-100 rounded-lg p-3 max-w-md'>
 												<p className='text-sm'>
-													I'd be happy to help! Please share your Python
-													function and I'll analyze it for performance
+													I&apos;d be happy to help! Please share your Python
+													function and I&apos;ll analyze it for performance
 													optimizations, suggest improvements, and explain the
 													reasoning behind each suggestion.
 												</p>
@@ -432,9 +426,12 @@ export default function AIDetailPage() {
 													<div
 														key={index}
 														className='border rounded-lg overflow-hidden'>
-														<img
+														<Image
 															src={screenshot}
 															alt={`Screenshot ${index + 1}`}
+															width={600}
+															height={400}
+															sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 															className='w-full h-48 object-cover'
 														/>
 													</div>

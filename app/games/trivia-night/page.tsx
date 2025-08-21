@@ -14,9 +14,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import {
 	Trophy,
-	Users,
-	Clock,
-	Star,
 	Zap,
 	Target,
 	Brain,
@@ -31,7 +28,7 @@ import Link from 'next/link';
 
 export default function TriviaGameRoom() {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [selectedAnswer, setSelectedAnswer] = useState(null);
+	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 	const [showResult, setShowResult] = useState(false);
 	const [gameState, setGameState] = useState('waiting'); // waiting, playing, finished
 	const [timeLeft, setTimeLeft] = useState(15);
@@ -125,7 +122,7 @@ export default function TriviaGameRoom() {
 		}
 	}, [timeLeft, gameState, showResult]);
 
-	const handleAnswerSelect = (index) => {
+	const handleAnswerSelect = (index: number) => {
 		if (showResult) return;
 		setSelectedAnswer(index);
 		setShowResult(true);
@@ -151,7 +148,7 @@ export default function TriviaGameRoom() {
 		setTimeLeft(15);
 	};
 
-	const getRankIcon = (rank) => {
+	const getRankIcon = (rank: number) => {
 		switch (rank) {
 			case 1:
 				return <Crown className='h-4 w-4 text-yellow-500' />;

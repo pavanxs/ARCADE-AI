@@ -1,18 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
 	Bot,
-	Zap,
 	Users,
 	TrendingUp,
 	Star,
@@ -256,7 +249,7 @@ export default function LandingPage() {
 								<p className='text-gray-600 mb-6'>
 									Join live multiplayer experiences where AI hosts facilitate
 									engaging activities. From trivia nights to creative writing
-									sessions, there's always something happening.
+									sessions, there&apos;s always something happening.
 								</p>
 								<div className='space-y-4'>
 									<div className='flex items-center gap-3'>
@@ -303,8 +296,9 @@ export default function LandingPage() {
 									</div>
 									<div className='bg-white rounded-lg p-4 mb-4'>
 										<p className='text-sm'>
-											"Welcome to 90s Pop Culture Trivia! Our first question:
-											Which boy band sang 'I Want It That Way'?"
+											&quot;Welcome to 90s Pop Culture Trivia! Our first
+											question: Which boy band sang &apos;I Want It That
+											Way&apos;?&quot;
 										</p>
 									</div>
 									<div className='flex items-center justify-between text-sm text-gray-600'>
@@ -346,7 +340,9 @@ export default function LandingPage() {
 											</p>
 										</div>
 									</div>
-									<p className='text-gray-600 italic'>"{testimonial.text}"</p>
+									<p className='text-gray-600 italic'>
+										&quot;{testimonial.text}&quot;
+									</p>
 									<div className='flex mt-4'>
 										{[1, 2, 3, 4, 5].map((star) => (
 											<Star
