@@ -1,517 +1,408 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import {
-	Gamepad2,
-	Users,
-	Clock,
-	Search,
-	Play,
-	Star,
-	Brain,
-	BookOpen,
-	Sword,
-	Puzzle,
-	Crown,
-	Eye,
-	ArrowLeft,
-	Plus,
-} from 'lucide-react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState } from "react";
+import { Layout } from "@/components/layout/layout";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { 
+  Search, 
+  Play, 
+  Users, 
+  Clock, 
+  Star, 
+  Gamepad2, 
+  Bot, 
+  Zap, 
+  Brain,
+  Target,
+  Puzzle,
+  Trophy
+} from "lucide-react";
+import Link from "next/link";
 
-export default function GamesHub() {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedCategory, setSelectedCategory] = useState('all');
-	const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+// Mock data for AI games
+const mockGames = [
+  {
+    id: "1",
+    name: "AI Dungeon Master",
+    description: "An AI-powered text-based RPG where the dungeon master adapts to your choices in real-time.",
+    category: "Adventure",
+    creator: "0x1234...5678",
+    creatorName: "GameDev Studios",
+    players: 1250,
+    rating: 4.8,
+    playTime: "30-60 min",
+    difficulty: "Medium",
+    tags: ["RPG", "Text-based", "Adaptive", "Story"],
+    thumbnail: "dungeon",
+    isLive: true,
+    price: 0,
+  },
+  {
+    id: "2",
+    name: "Neural Chess",
+    description: "Play chess against an AI that learns and adapts to your playing style throughout the game.",
+    category: "Strategy",
+    creator: "0x8765...4321",
+    creatorName: "ChessAI Labs",
+    players: 890,
+    rating: 4.9,
+    playTime: "15-45 min",
+    difficulty: "Hard",
+    tags: ["Chess", "Strategy", "Learning", "Competitive"],
+    thumbnail: "chess",
+    isLive: true,
+    price: 0.1,
+  },
+  {
+    id: "3",
+    name: "Story Weaver",
+    description: "Collaborative storytelling with AI where you and the AI create stories together.",
+    category: "Creative",
+    creator: "0x9876...1234",
+    creatorName: "Creative AI",
+    players: 2100,
+    rating: 4.7,
+    playTime: "20-40 min",
+    difficulty: "Easy",
+    tags: ["Creative", "Storytelling", "Collaborative", "Writing"],
+    thumbnail: "story",
+    isLive: true,
+    price: 0,
+  },
+  {
+    id: "4",
+    name: "Code Challenge Arena",
+    description: "AI generates programming challenges that adapt to your skill level and coding style.",
+    category: "Educational",
+    creator: "0x5432...9876",
+    creatorName: "CodeAI Academy",
+    players: 756,
+    rating: 4.6,
+    playTime: "10-30 min",
+    difficulty: "Medium",
+    tags: ["Programming", "Education", "Challenges", "Adaptive"],
+    thumbnail: "code",
+    isLive: false,
+    price: 0.05,
+  },
+  {
+    id: "5",
+    name: "Mystery Detective",
+    description: "Solve AI-generated mysteries where clues and suspects are created based on your investigation style.",
+    category: "Puzzle",
+    creator: "0x2468...1357",
+    creatorName: "Mystery Games Inc",
+    players: 1456,
+    rating: 4.5,
+    playTime: "45-90 min",
+    difficulty: "Medium",
+    tags: ["Mystery", "Detective", "Puzzle", "Investigation"],
+    thumbnail: "mystery",
+    isLive: true,
+    price: 0.2,
+  },
+];
 
-	const gameCategories = [
-		{ id: 'trivia', name: 'Trivia & Quiz', icon: Brain, color: 'yellow' },
-		{
-			id: 'creative',
-			name: 'Creative Writing',
-			icon: BookOpen,
-			color: 'purple',
-		},
-		{ id: 'adventure', name: 'Text Adventures', icon: Sword, color: 'red' },
-		{ id: 'puzzle', name: 'Logic Puzzles', icon: Puzzle, color: 'blue' },
-		{ id: 'debate', name: 'Debate Games', icon: Users, color: 'green' },
-		{ id: 'strategy', name: 'Strategy Games', icon: Crown, color: 'indigo' },
-	];
+const categories = ["All", "Adventure", "Strategy", "Creative", "Educational", "Puzzle", "Action"];
 
-	const featuredGames = [
-		{
-			id: 1,
-			name: '90s Pop Culture Trivia Night',
-			description:
-				'Test your knowledge of the greatest decade in pop culture history',
-			category: 'trivia',
-			difficulty: 'Medium',
-			currentPlayers: 24,
-			maxPlayers: 30,
-			host: 'Quiz Master 3000',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'live',
-			featured: true,
-			estimatedTime: '15-20 minutes',
-			thumbnail: '/api/placeholder/300/200',
-		},
-		{
-			id: 2,
-			name: 'Collaborative Sci-Fi Adventure',
-			description: 'Work together to create an epic science fiction story',
-			category: 'creative',
-			difficulty: 'Intermediate',
-			currentPlayers: 6,
-			maxPlayers: 8,
-			host: 'Story Weaver AI',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'live',
-			featured: true,
-			estimatedTime: '45-60 minutes',
-			thumbnail: '/api/placeholder/300/200',
-		},
-		{
-			id: 3,
-			name: 'Mystery of the Lost City',
-			description:
-				'Explore ancient ruins and solve puzzles in this text-based adventure',
-			category: 'adventure',
-			difficulty: 'Hard',
-			currentPlayers: 1,
-			maxPlayers: 1,
-			host: 'Adventure Master',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'available',
-			featured: true,
-			estimatedTime: '30-45 minutes',
-			thumbnail: '/api/placeholder/300/200',
-		},
-	];
+export default function Games() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("popularity");
 
-	const availableGames = [
-		{
-			id: 4,
-			name: 'Philosophy Debate Arena',
-			description: 'Engage in deep philosophical discussions and debates',
-			category: 'debate',
-			difficulty: 'Hard',
-			currentPlayers: 8,
-			maxPlayers: 12,
-			host: 'Socrates AI',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'live',
-			featured: false,
-			estimatedTime: '60 minutes',
-			rating: 4.8,
-		},
-		{
-			id: 5,
-			name: 'Quick Math Challenge',
-			description: 'Fast-paced mental math competition',
-			category: 'trivia',
-			difficulty: 'Easy',
-			currentPlayers: 15,
-			maxPlayers: 20,
-			host: 'Math Bot',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'live',
-			featured: false,
-			estimatedTime: '10 minutes',
-			rating: 4.6,
-		},
-		{
-			id: 6,
-			name: 'Poetry Slam',
-			description: 'Create and share original poetry with the community',
-			category: 'creative',
-			difficulty: 'Easy',
-			currentPlayers: 4,
-			maxPlayers: 10,
-			host: 'Poet AI',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'waiting',
-			featured: false,
-			estimatedTime: '30 minutes',
-			rating: 4.7,
-		},
-		{
-			id: 7,
-			name: 'Logic Grid Solver',
-			description: 'Work together to solve complex logic puzzles',
-			category: 'puzzle',
-			difficulty: 'Hard',
-			currentPlayers: 3,
-			maxPlayers: 6,
-			host: 'Logic Master',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'waiting',
-			featured: false,
-			estimatedTime: '45 minutes',
-			rating: 4.9,
-		},
-		{
-			id: 8,
-			name: 'Space Trading Empire',
-			description:
-				'Build your interstellar trading empire in this strategy game',
-			category: 'strategy',
-			difficulty: 'Intermediate',
-			currentPlayers: 2,
-			maxPlayers: 4,
-			host: 'Strategy AI',
-			hostAvatar: '/api/placeholder/40/40',
-			status: 'waiting',
-			featured: false,
-			estimatedTime: '90 minutes',
-			rating: 4.5,
-		},
-	];
+  const filteredGames = mockGames.filter(game => {
+    const matchesSearch = game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         game.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         game.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesCategory = selectedCategory === "All" || game.category === selectedCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
-	type GameStatus = 'live' | 'waiting' | 'full' | string;
-	const getStatusColor = (status: GameStatus) => {
-		switch (status) {
-			case 'live':
-				return 'bg-green-500';
-			case 'waiting':
-				return 'bg-yellow-500';
-			case 'full':
-				return 'bg-red-500';
-			default:
-				return 'bg-gray-500';
-		}
-	};
+  const sortedGames = [...filteredGames].sort((a, b) => {
+    switch (sortBy) {
+      case "rating":
+        return b.rating - a.rating;
+      case "newest":
+        return parseInt(b.id) - parseInt(a.id);
+      case "price-low":
+        return a.price - b.price;
+      case "price-high":
+        return b.price - a.price;
+      default: // popularity
+        return b.players - a.players;
+    }
+  });
 
-	const getStatusText = (status: GameStatus) => {
-		switch (status) {
-			case 'live':
-				return 'Live';
-			case 'waiting':
-				return 'Waiting';
-			case 'full':
-				return 'Full';
-			default:
-				return 'Available';
-		}
-	};
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "Adventure": return <Gamepad2 className="h-5 w-5" />;
+      case "Strategy": return <Brain className="h-5 w-5" />;
+      case "Creative": return <Zap className="h-5 w-5" />;
+      case "Educational": return <Target className="h-5 w-5" />;
+      case "Puzzle": return <Puzzle className="h-5 w-5" />;
+      default: return <Bot className="h-5 w-5" />;
+    }
+  };
 
-	const getDifficultyColor = (difficulty: string) => {
-		switch (difficulty.toLowerCase()) {
-			case 'easy':
-				return 'text-green-600 bg-green-100';
-			case 'medium':
-			case 'intermediate':
-				return 'text-yellow-600 bg-yellow-100';
-			case 'hard':
-				return 'text-red-600 bg-red-100';
-			default:
-				return 'text-gray-600 bg-gray-100';
-		}
-	};
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "Easy": return "bg-green-100 text-green-800";
+      case "Medium": return "bg-yellow-100 text-yellow-800";
+      case "Hard": return "bg-red-100 text-red-800";
+      default: return "bg-gray-100 text-gray-800";
+    }
+  };
 
-	const filteredGames = availableGames.filter((game) => {
-		const matchesSearch =
-			game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			game.description.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesCategory =
-			selectedCategory === 'all' || game.category === selectedCategory;
-		const matchesDifficulty =
-			selectedDifficulty === 'all' ||
-			game.difficulty.toLowerCase() === selectedDifficulty.toLowerCase();
-		return matchesSearch && matchesCategory && matchesDifficulty;
-	});
+  return (
+    <Layout>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4">AI-Powered Games</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Experience next-generation gaming with AI that adapts, learns, and creates unique experiences just for you
+          </p>
+        </div>
 
-	return (
-		<div className='min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-100'>
-			{/* Header */}
-			<header className='border-b bg-white/80 backdrop-blur-md sticky top-0 z-50'>
-				<div className='container mx-auto px-4 py-4'>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center space-x-4'>
-							<Button variant='ghost' asChild>
-								<Link href='/dashboard'>
-									<ArrowLeft className='h-4 w-4 mr-2' />
-									Back to Dashboard
-								</Link>
-							</Button>
-						</div>
+        {/* Featured Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-4">🔥 Trending Now</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="relative overflow-hidden">
+              <div className="absolute top-4 right-4">
+                <Badge className="bg-red-500 text-white">
+                  <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse" />
+                  Live
+                </Badge>
+              </div>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Gamepad2 className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">AI Dungeon Master</CardTitle>
+                    <CardDescription>Most popular adventure game</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Experience unlimited adventures with an AI dungeon master that creates unique stories based on your choices.
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      1,250 players
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      4.8
+                    </span>
+                  </div>
+                  <Button>
+                    <Play className="h-4 w-4 mr-2" />
+                    Play Free
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
-						<Link href='/dashboard' className='flex items-center space-x-2'>
-							<Gamepad2 className='h-8 w-8 text-blue-600' />
-							<span className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
-								AI Game Hub
-							</span>
-						</Link>
+            <Card className="relative overflow-hidden">
+              <div className="absolute top-4 right-4">
+                <Badge variant="secondary">Premium</Badge>
+              </div>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Brain className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Neural Chess</CardTitle>
+                    <CardDescription>AI that learns your style</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Play against an AI opponent that adapts and learns from your moves to provide the perfect challenge.
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      890 players
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      4.9
+                    </span>
+                  </div>
+                  <Button>
+                    <Play className="h-4 w-4 mr-2" />
+                    Play $0.10
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
-						<div className='flex items-center space-x-4'>
-							<div className='relative'>
-								<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4' />
-								<Input
-									placeholder='Search games...'
-									className='pl-10 w-64'
-									value={searchQuery}
-									onChange={(e) => setSearchQuery(e.target.value)}
-								/>
-							</div>
-							<Button asChild>
-								<Link href='/rooms/create'>
-									<Plus className='h-4 w-4 mr-2' />
-									Create Game
-								</Link>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</header>
+        {/* Search and Filters */}
+        <div className="mb-8 space-y-4">
+          <div className="flex gap-4 items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search games by name, description, or tags..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
 
-			<div className='container mx-auto px-4 py-8'>
-				<div className='mb-8'>
-					<h1 className='text-3xl font-bold mb-2'>AI Game Hub</h1>
-					<p className='text-gray-600'>
-						Discover and play amazing AI-powered games with friends
-					</p>
-				</div>
+          <div className="flex gap-4 items-center">
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map(category => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-				{/* Game Categories */}
-				<div className='mb-8'>
-					<h2 className='text-xl font-semibold mb-4'>Game Categories</h2>
-					<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'>
-						{gameCategories.map((category) => {
-							const Icon = category.icon;
-							return (
-								<Card
-									key={category.id}
-									className='hover:shadow-lg transition-shadow cursor-pointer'>
-									<CardContent className='p-6 text-center'>
-										<Icon
-											className={`h-8 w-8 mx-auto mb-3 text-${category.color}-600`}
-										/>
-										<h3 className='font-semibold text-sm'>{category.name}</h3>
-									</CardContent>
-								</Card>
-							);
-						})}
-					</div>
-				</div>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="popularity">Most Popular</SelectItem>
+                <SelectItem value="rating">Highest Rated</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
-				{/* Featured Games */}
-				<div className='mb-8'>
-					<div className='flex items-center gap-2 mb-4'>
-						<Crown className='h-5 w-5 text-yellow-500' />
-						<h2 className='text-xl font-semibold'>Featured Games</h2>
-					</div>
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-						{featuredGames.map((game) => (
-							<Card
-								key={game.id}
-								className='hover:shadow-lg transition-shadow overflow-hidden'>
-								<div className='relative'>
-									<Image
-										src={game.thumbnail}
-										alt={game.name}
-										width={300}
-										height={200}
-										sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-										className='w-full h-48 object-cover'
-									/>
-									<div className='absolute top-4 left-4'>
-										<Badge
-											className={`${getStatusColor(game.status)} text-white`}>
-											<div className='w-2 h-2 bg-white rounded-full mr-2' />
-											{getStatusText(game.status)}
-										</Badge>
-									</div>
-									<div className='absolute top-4 right-4'>
-										<Badge variant='secondary'>Featured</Badge>
-									</div>
-								</div>
+        {/* Games Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedGames.map((game) => (
+            <Card key={game.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      {getCategoryIcon(game.category)}
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">{game.name}</CardTitle>
+                      <CardDescription className="flex items-center gap-2">
+                        {game.category}
+                        {game.isLive && (
+                          <Badge variant="secondary" className="text-xs">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1 animate-pulse" />
+                            Live
+                          </Badge>
+                        )}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </div>
+                
+                <p className="text-sm text-muted-foreground mt-2">
+                  {game.description}
+                </p>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap gap-1">
+                  {game.tags.slice(0, 3).map((tag, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
 
-								<CardContent className='p-6'>
-									<div className='flex items-start justify-between mb-3'>
-										<h3 className='font-semibold text-lg'>{game.name}</h3>
-										<Badge className={getDifficultyColor(game.difficulty)}>
-											{game.difficulty}
-										</Badge>
-									</div>
+                <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Users className="h-3 w-3" />
+                    <span>{game.players} players</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Star className="h-3 w-3 text-yellow-500" />
+                    <span>{game.rating}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    <span>{game.playTime}</span>
+                  </div>
+                  <div>
+                    <Badge 
+                      className={`text-xs ${getDifficultyColor(game.difficulty)}`}
+                      variant="secondary"
+                    >
+                      {game.difficulty}
+                    </Badge>
+                  </div>
+                </div>
 
-									<p className='text-gray-600 text-sm mb-4'>
-										{game.description}
-									</p>
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={`https://api.dicebear.com/7.x/identicon/svg?seed=${game.creator}`} />
+                      <AvatarFallback>{game.creatorName?.slice(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-xs text-muted-foreground">
+                      {game.creatorName}
+                    </span>
+                  </div>
+                  
+                  <Button size="sm" asChild>
+                    <Link href={`/games/${game.id}`}>
+                      <Play className="h-3 w-3 mr-2" />
+                      {game.price === 0 ? "Play Free" : `Play $${game.price}`}
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-									<div className='flex items-center gap-2 mb-4'>
-										<Avatar className='h-6 w-6'>
-											<AvatarImage src={game.hostAvatar} />
-											<AvatarFallback>{game.host[0]}</AvatarFallback>
-										</Avatar>
-										<span className='text-sm text-gray-600'>
-											Hosted by {game.host}
-										</span>
-									</div>
-
-									<div className='flex items-center justify-between text-sm text-gray-500 mb-4'>
-										<div className='flex items-center gap-1'>
-											<Users className='h-4 w-4' />
-											{game.currentPlayers}/{game.maxPlayers} players
-										</div>
-										<div className='flex items-center gap-1'>
-											<Clock className='h-4 w-4' />
-											{game.estimatedTime}
-										</div>
-									</div>
-
-									<Button className='w-full' asChild>
-										<Link
-											href={
-												game.id === 1
-													? '/games/trivia-night'
-													: game.id === 2
-													? '/games/story-builder'
-													: `/games/${game.id}`
-											}>
-											<Play className='h-4 w-4 mr-2' />
-											{game.status === 'live' ? 'Join Game' : 'Start Game'}
-										</Link>
-									</Button>
-								</CardContent>
-							</Card>
-						))}
-					</div>
-				</div>
-
-				{/* All Games */}
-				<div>
-					<div className='flex items-center justify-between mb-4'>
-						<h2 className='text-xl font-semibold'>All Games</h2>
-
-						<div className='flex gap-4'>
-							<Select
-								value={selectedCategory}
-								onValueChange={setSelectedCategory}>
-								<SelectTrigger className='w-48'>
-									<SelectValue placeholder='Category' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value='all'>All Categories</SelectItem>
-									{gameCategories.map((category) => (
-										<SelectItem key={category.id} value={category.id}>
-											{category.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-
-							<Select
-								value={selectedDifficulty}
-								onValueChange={setSelectedDifficulty}>
-								<SelectTrigger className='w-32'>
-									<SelectValue placeholder='Difficulty' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value='all'>All Levels</SelectItem>
-									<SelectItem value='easy'>Easy</SelectItem>
-									<SelectItem value='intermediate'>Intermediate</SelectItem>
-									<SelectItem value='hard'>Hard</SelectItem>
-								</SelectContent>
-							</Select>
-						</div>
-					</div>
-
-					<div className='grid gap-4'>
-						{filteredGames.map((game) => (
-							<Card key={game.id} className='hover:shadow-lg transition-shadow'>
-								<CardContent className='p-6'>
-									<div className='flex items-start gap-4'>
-										<Avatar className='h-12 w-12'>
-											<AvatarImage src={game.hostAvatar} />
-											<AvatarFallback>{game.host[0]}</AvatarFallback>
-										</Avatar>
-
-										<div className='flex-1'>
-											<div className='flex items-center gap-3 mb-2'>
-												<h3 className='font-semibold text-lg'>{game.name}</h3>
-												<Badge
-													className={`${getStatusColor(
-														game.status
-													)} text-white`}>
-													{getStatusText(game.status)}
-												</Badge>
-												<Badge className={getDifficultyColor(game.difficulty)}>
-													{game.difficulty}
-												</Badge>
-											</div>
-
-											<p className='text-gray-600 mb-3'>{game.description}</p>
-
-											<div className='flex items-center gap-6 text-sm text-gray-500'>
-												<span>Hosted by {game.host}</span>
-												<div className='flex items-center gap-1'>
-													<Users className='h-4 w-4' />
-													{game.currentPlayers}/{game.maxPlayers} players
-												</div>
-												<div className='flex items-center gap-1'>
-													<Clock className='h-4 w-4' />
-													{game.estimatedTime}
-												</div>
-												{game.rating && (
-													<div className='flex items-center gap-1'>
-														<Star className='h-4 w-4 fill-yellow-400 text-yellow-400' />
-														{game.rating}
-													</div>
-												)}
-											</div>
-										</div>
-
-										<div className='flex flex-col gap-2'>
-											<Button asChild>
-												<Link href={`/games/${game.id}`}>
-													<Play className='h-4 w-4 mr-2' />
-													{game.status === 'live' ? 'Join' : 'Start'}
-												</Link>
-											</Button>
-											<Button variant='outline' size='sm'>
-												<Eye className='h-4 w-4 mr-2' />
-												Watch
-											</Button>
-										</div>
-									</div>
-								</CardContent>
-							</Card>
-						))}
-					</div>
-
-					{filteredGames.length === 0 && (
-						<Card>
-							<CardContent className='p-12 text-center'>
-								<Gamepad2 className='h-16 w-16 text-gray-400 mx-auto mb-4' />
-								<h3 className='text-lg font-semibold text-gray-600 mb-2'>
-									No games found
-								</h3>
-								<p className='text-gray-500 mb-6'>
-									Try adjusting your search filters or create a new game!
-								</p>
-								<Button asChild>
-									<Link href='/rooms/create'>
-										<Plus className='h-4 w-4 mr-2' />
-										Create New Game
-									</Link>
-								</Button>
-							</CardContent>
-						</Card>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+        {/* Create Your Own Game CTA */}
+        <div className="mt-12">
+          <Card className="text-center">
+            <CardContent className="py-8">
+              <Trophy className="h-12 w-12 mx-auto mb-4 text-primary" />
+              <h3 className="text-xl font-bold mb-2">Create Your Own AI Game</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Have an idea for an AI-powered game? Use our platform to create programmable AI agents 
+                that can power your own unique gaming experiences.
+              </p>
+              <Button size="lg" asChild>
+                <Link href="/dashboard/create">
+                  Start Creating
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </Layout>
+  );
 }
