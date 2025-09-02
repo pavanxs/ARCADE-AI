@@ -25,6 +25,11 @@ export default function Home() {
           <Button size="lg" variant="outline" asChild>
             <Link href="/marketplace">Explore Marketplace</Link>
           </Button>
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="https://arcade-ai-psi.vercel.app/" target="_blank" rel="noopener noreferrer">
+              🚀 Live Demo
+            </Link>
+          </Button>
         </div>
       </section>
 
@@ -93,9 +98,16 @@ export default function Home() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Join the future of AI agent creation and monetization. Connect your wallet and start building today.
           </p>
-          <Button size="lg" asChild>
-            <Link href="/dashboard">Start Creating</Link>
-          </Button>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Button size="lg" asChild>
+              <Link href="/dashboard">Start Creating</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link href="https://arcade-ai-psi.vercel.app/" target="_blank" rel="noopener noreferrer">
+                🚀 View Live Demo
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     </Layout>
