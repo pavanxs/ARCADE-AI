@@ -18,6 +18,12 @@ All features from the PRD have been implemented with comprehensive 0G Network in
 - 📊 [Dashboard](https://arcade-ai-psi.vercel.app/dashboard) - Manage your AI agents
 - ➕ [Create Agent](https://arcade-ai-psi.vercel.app/dashboard/create) - Build new AI agents
 
+### 🆕 **Screens**
+<img width="1076" height="616" alt="Screenshot 2025-09-03 032235" src="https://github.com/user-attachments/assets/48a10b99-4535-4e45-b05e-485fa6facaa4" />
+<img width="1079" height="614" alt="Screenshot 2025-09-03 032153" src="https://github.com/user-attachments/assets/c0202b74-0781-4057-af92-3cfd67665ae6" />
+<img width="1079" height="614" alt="Screenshot 2025-09-03 032036" src="https://github.com/user-attachments/assets/df22d8cd-7fd6-41a2-ad74-0ed854e93b07" />
+<img width="1079" height="614" alt="Screenshot 2025-09-03 031936" src="https://github.com/user-attachments/assets/b62bc62d-6705-4402-8678-39298fc6cf75" />
+
 ### 🆕 **What's New - Latest Changes**
 
 #### **🔧 Core Platform Features**
