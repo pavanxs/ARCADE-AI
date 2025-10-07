@@ -1,6 +1,7 @@
 import { createConfig, http } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
-import { injected, walletConnect } from "wagmi/connectors";
+import { injected } from "wagmi/connectors";
+// import { walletConnect } from "wagmi/connectors"; // Temporarily disabled
 
 // 0G Chain configuration (placeholder - will need actual chain details)
 export const zeroGChain = {
@@ -25,9 +26,10 @@ export const config = createConfig({
   chains: [mainnet, sepolia, zeroGChain],
   connectors: [
     injected(),
-    walletConnect({ 
-      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "2f5a4c8b9e3d7a1f6c8b5e2a9d4f7c1b" 
-    }),
+    // walletConnect connector temporarily disabled to fix Reown allowlist error
+    // walletConnect({
+    //   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "2f5a4c8b9e3d7a1f6c8b5e2a9d4f7c1b"
+    // }),
   ],
   transports: {
     [mainnet.id]: http(),
