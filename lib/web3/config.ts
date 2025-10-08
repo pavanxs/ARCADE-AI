@@ -3,10 +3,10 @@ import { mainnet, sepolia } from "wagmi/chains";
 import { injected } from "wagmi/connectors";
 // import { walletConnect } from "wagmi/connectors"; // Temporarily disabled
 
-// 0G Chain configuration (placeholder - will need actual chain details)
+// 0G Chain configuration - Testnet
 export const zeroGChain = {
-  id: 16600, // Placeholder chain ID
-  name: '0G Chain',
+  id: 16600,
+  name: '0G Chain Testnet',
   nativeCurrency: {
     decimals: 18,
     name: '0G',
@@ -14,11 +14,11 @@ export const zeroGChain = {
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.0g.ai'], // Placeholder RPC URL
+      http: ['https://evmrpc-testnet.0g.ai'],
     },
   },
   blockExplorers: {
-    default: { name: 'Explorer', url: 'https://explorer.0g.ai' },
+    default: { name: '0G Explorer', url: 'https://chainscan.0g.ai' },
   },
 } as const;
 

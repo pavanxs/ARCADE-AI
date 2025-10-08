@@ -191,7 +191,7 @@ export function ChatInterface({ agentId, userAccess }: ChatInterfaceProps) {
                   ? "bg-primary text-primary-foreground" 
                   : "bg-muted"
               }`}>
-                <CardContent className="p-3">
+                <CardContent className="px-3 py-0">
                   {message.isTyping ? (
                     <div className="flex items-center gap-2">
                       <div className="flex space-x-1">
